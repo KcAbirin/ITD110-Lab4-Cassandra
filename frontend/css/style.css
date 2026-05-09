@@ -1,0 +1,343 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background-color: #f7f8fa;
+    color: #2d2d2d;
+    line-height: 1.6;
+}
+
+/* ---- HEADER (SDG 4 RED THEME) ---- */
+header {
+    background: #c5192d;
+    color: #ffffff;
+    padding: 24px 0;
+    border-bottom: 4px solid #a31525;
+}
+
+.header-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.sdg-badge {
+    background: #ffffff;
+    color: #c5192d;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+.subtitle {
+    font-size: 13px;
+    opacity: 0.9;
+    margin-top: 2px;
+}
+
+/* ---- LAYOUT ---- */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 20px 40px;
+}
+
+/* ---- SECTIONS ---- */
+.section {
+    background: #ffffff;
+    border: 1px solid #e2e4e8;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.section h2 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #c5192d;
+    padding-bottom: 8px;
+}
+
+.section-desc {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 14px;
+}
+
+/* ---- BUTTONS ---- */
+.btn {
+    padding: 9px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-primary {
+    background: #c5192d;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: #a31525;
+}
+
+.btn-secondary {
+    background: #e2e4e8;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #d0d2d6;
+}
+
+.btn-import {
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+.btn-import:hover {
+    background: #333;
+}
+
+.btn-import:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+
+/* ---- IMPORT ---- */
+.import-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.import-row input[type="file"] {
+    flex: 1;
+    font-size: 13px;
+}
+
+/* ---- STATUS ---- */
+.status {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+.status.success {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+
+.status.error {
+    background: #fce4e4;
+    color: #c0392b;
+    border: 1px solid #f5c6cb;
+}
+
+/* ---- FORM ---- */
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid #d0d2d6;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s ease;
+    background: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #c5192d;
+    box-shadow: 0 0 0 3px rgba(197, 25, 45, 0.15);
+}
+
+.form-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* ---- FILTER ---- */
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.filter-row label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    white-space: nowrap;
+}
+
+#location-select,
+#region-select {
+    flex: 1;
+    padding: 9px 10px;
+    border: 1px solid #d0d2d6;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+}
+
+#location-select:focus,
+#region-select:focus {
+    border-color: #c5192d;
+}
+
+/* ---- TABLE ---- */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+th,
+td {
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 13px;
+    border-bottom: 1px solid #ececec;
+}
+
+th {
+    background: #c5192d;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+tr:hover {
+    background: #fff3f4;
+}
+
+/* ---- ACTION BUTTONS ---- */
+.btn-edit,
+.btn-delete {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-edit {
+    background: #c5192d;
+    color: #fff;
+    margin-right: 4px;
+}
+
+.btn-edit:hover {
+    background: #a31525;
+}
+
+.btn-delete {
+    background: #555;
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background: #333;
+}
+
+/* ---- EMPTY TABLE ---- */
+.no-data {
+    text-align: center;
+    color: #999;
+    padding: 24px;
+    font-size: 14px;
+}
+
+/* ---- FOOTER ---- */
+footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e4e8;
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+}
+
+footer p {
+    margin-bottom: 3px;
+}
+
+/* ---- UTILITIES ---- */
+.hidden {
+    display: none;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+
+    .form-row,
+    .filter-row,
+    .import-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .section {
+        padding: 18px;
+    }
+}

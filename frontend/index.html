@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDG 4 - Cohort Survival Rate</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <div class="sdg-badge">SDG 4</div>
+        <div>
+            <h1>Philippine Cohort Survival Rate</h1>
+            <p class="subtitle">
+                Sustainable Development Goal 4 — Quality Education
+            </p>
+            </div>
+    </div>
+</header>
+
+<div class="container">
+
+<section class="section">
+    <h2>Import Dataset</h2>
+
+    <div class="import-row">
+        <input type="file" id="csv-file" accept=".csv">
+        <button id="import-btn" class="btn btn-import">
+            Import CSV
+        </button>
+    </div>
+
+    <p id="import-status" class="status hidden"></p>
+</section>
+
+<section class="section">
+    <h2>Education Dataset</h2>
+
+    <div class="filter-row">
+        <label>Filter by Location</label>
+        <select id="location-select">
+            <option value="">All Locations</option>
+        </select>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Location</th>
+                    <th>Year</th>
+                    <th>Education Level</th>
+                    <th>Sex</th>
+                    <th>Survival Rate</th>
+                </tr>
+            </thead>
+            <tbody id="data-tbody"></tbody>
+        </table>
+    </div>
+</section>
+
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
