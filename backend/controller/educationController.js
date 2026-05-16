@@ -1,6 +1,7 @@
 const { client } = require('../config/db');
 
-// IMPORT CSV
+// IMPORT CSV (No Validation / Direct Mapping)
+// IMPORT CSV (With Trailing Line Defense / Direct Mapping)
 const importDataset = async (req, res) => {
     try {
         const { csv } = req.body;
@@ -9,59 +10,73 @@ const importDataset = async (req, res) => {
             return res.status(400).json({ message: 'CSV data is required' });
         }
 
-        const lines = csv.split('\n').filter((l) => l.trim());
+        // Split lines handling both Windows and Unix line endings
+        const lines = csv
+            .split(/\r?\n/)
+            .map((l) => l.trim())
+            .filter((l) => l.length > 0);
 
-        const header = lines[0].split(',');
-
-        const years = ['2018', '2019', '2020', '2021', '2022', '2023'];
-        let inserted = 0;
         const queries = [];
 
+        // Loop starts at 1 to skip the header row
         for (let i = 1; i < lines.length; i++) {
-            const cols = lines[i].split(',');
+            // Split by comma, handling potential quotes safely
+            let cols = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+            cols = cols.map(c => c.trim().replace(/^"|"$/g, ''));
 
-            const indicator = cols[0]?.trim();
-            const geolocation = cols[1]?.trim();
-            const education_level = cols[2]?.trim();
-            const sex = cols[3]?.trim();
-
-            for (let j = 0; j < years.length; j++) {
-                const value = parseFloat(cols[j + 4]);
-
-                if (isNaN(value)) continue;
-                queries.push({
-                    query: `
-                        INSERT INTO education_survival_rate
-                        (geolocation, year, education_level, sex, indicator, survival_rate)
-                        VALUES (?, ?, ?, ?, ?, ?)
-                    `,
-                    params: [
-                        geolocation,
-                        parseInt(years[j]),
-                        education_level,
-                        sex,
-                        indicator,
-                        value,
-                    ],
-                });
-
-                inserted++;
-            }
+            // DEFENSE: If the entire row split results in an empty or single-element array, skip it
+            if (cols.length < 5 || !cols[1] || !cols[4]) {
+                continue; 
             }
 
+            // Map columns directly to your database schema layout
+            const indicator = cols[0];
+            const geolocation = cols[1];
+            const education_level = cols[2];
+            const sex = cols[3];
+            const year = parseInt(cols[4], 10);
+            const survival_rate = parseFloat(cols[5]);
+
+            // DEFENSE: Ensure primary keys are mathematically present before pushing to Cassandra
+            if (!geolocation || isNaN(year) || !education_level || !sex) {
+                continue;
+            }
+
+            queries.push({
+                query: `
+                    INSERT INTO education_survival_rate
+                    (geolocation, year, education_level, sex, indicator, survival_rate)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                `,
+                params: [
+                    geolocation,
+                    year,
+                    education_level,
+                    sex,
+                    indicator,
+                    survival_rate,
+                ],
+            });
+        }
+
+        if (queries.length === 0) {
+            return res.status(400).json({ message: 'No valid data rows found to import.' });
+        }
+
+        // Execute the batch insertion directly
         const BATCH_SIZE = 30;
-
         for (let i = 0; i < queries.length; i += BATCH_SIZE) {
             await client.batch(queries.slice(i, i + BATCH_SIZE), {
                 prepare: true,
             });
         }
 
-        res.json({ message: `Imported ${inserted} data points` });
+        res.json({ message: `Successfully imported all ${queries.length} records.` });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
 // GET LOCATIONS
 const getLocations = async (req, res) => {
     try {
@@ -78,6 +93,7 @@ const getLocations = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 // GET DATA BY LOCATION
 const getByLocation = async (req, res) => {
     try {
@@ -94,6 +110,20 @@ const getByLocation = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// GET ALL DATA
+const getAll = async (req, res) => {
+    try {
+        const result = await client.execute(
+            'SELECT * FROM education_survival_rate'
+        );
+
+        res.json(result.rows);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // CREATE
 const createOne = async (req, res) => {
     try {
@@ -127,7 +157,7 @@ const createOne = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-    };
+};
 
 // UPDATE
 const updateOne = async (req, res) => {
@@ -198,10 +228,12 @@ const deleteOne = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 module.exports = {
     importDataset,
     getLocations,
     getByLocation,
+    getAll,
     createOne,
     updateOne,
     deleteOne,

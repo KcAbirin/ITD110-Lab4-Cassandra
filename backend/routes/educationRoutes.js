@@ -5,6 +5,7 @@ const {
     importDataset,
     getLocations,
     getByLocation,
+    getAll,
     createOne,
     updateOne,
     deleteOne,
@@ -12,6 +13,7 @@ const {
 
 router.post('/import', importDataset);
 router.get('/locations', getLocations);
+router.get('/', getAll);
 router.post('/', createOne);
 router.get('/:location', getByLocation);
 router.put('/:location/:year/:education_level/:sex', updateOne);
